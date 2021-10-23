@@ -1,0 +1,12 @@
+players = []
+
+for i in range(30):
+    players.append(player(.25,.25,0,-.1,.1))
+
+roundrunner=roundrobin(players)
+turns=15
+
+roundrunner.run(15)
+
+for player in players:
+    print(player)

@@ -36,5 +36,4 @@ class roundrobin(object):
                 roundresults[j+i][i]=score[1]
                 self.players[i].clear()
                 self.players[j+i].clear()
-        self.players[0].addScore(69)
         return roundresults
