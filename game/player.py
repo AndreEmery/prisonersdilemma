@@ -1,4 +1,4 @@
-import random
+import random, math
 
 class player(object):
     """Player class for the tournament"""
@@ -61,7 +61,7 @@ class player(object):
         return self.score
 
     def __str__(self):
-        string=""
+        string="" + str(self.score)+"\t"
         for element in self.getParameters():
             string+='{number:.{digits}f}'.format(number=element,digits=4)+"\t"
         return string
