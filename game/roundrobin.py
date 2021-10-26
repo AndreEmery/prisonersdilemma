@@ -5,15 +5,15 @@ class roundrobin(object):
         self.players=players
         self.nplayers=len(players)
 
-    def match(self, player1, player2, turn):
-        p1=player1.strategy(player2, turn)
-        p2=player2.strategy(player1, turn)
+    def match(self, player1, player2, turn, turnstot):
+        p1=player1.strategy(player2, turn, turnstot)
+        p2=player2.strategy(player1, turn, turnstot)
         player1.addHistory(p1)
         player2.addHistory(p2)
-        return [(3-p1)*p2, (3-p2)*p1]
+        return [(4-p1)*p2+1-p1, (4-p2)*p1+1-p2]
                 
     
-    def run(self, turns):
+    def run(self, turnstot):
         """Plays a roundrobin style tournament"""
 
         roundresults = []
@@ -22,19 +22,24 @@ class roundrobin(object):
             for j in range(len(self.players)):
                 filler.append(0)
             roundresults.append(filler)
+
+        for player in self.players:
+            player.clearScore()
+            
         for i in range(len(self.players)):
             for j in range(len(self.players)-i):
-                if i==j:
+                if j==0:
                     roundresults[i][i]=0
                     continue
                 score=[0,0]
-                for k in range(turns):
-                    matchresult=self.match(self.players[i],self.players[j+i],k)
+                for k in range(turnstot):
+                    matchresult=self.match(self.players[i],self.players[j+i],k, turnstot)
                     score[0]+=matchresult[0]
                     score[1]+=matchresult[1]
                 roundresults[i][j+i]=score[0]
+                self.players[i].addScore(score[0])
                 roundresults[j+i][i]=score[1]
-                self.players[i].clear()
-                self.players[j+i].clear()
-        self.players[0].addScore(69)
+                self.players[j+i].addScore(score[1])
+                self.players[i].clearHistory()
+                self.players[j+i].clearHistory()
         return roundresults
